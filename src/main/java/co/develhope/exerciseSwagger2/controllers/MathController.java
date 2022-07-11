@@ -2,15 +2,18 @@ package co.develhope.exerciseSwagger2.controllers;
 /**
  * @author Tania Ielpo
  */
-
 import co.develhope.exerciseSwagger2.entities.AritmeticOperation;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.Size;
+
+@Validated
 @RestController
 @RequestMapping("/math")
 public class MathController {
@@ -52,19 +55,21 @@ public class MathController {
                     "passed as an array in the body of the request example:[2,3,4,5,..]" )
     @ResponseStatus(HttpStatus.OK)
     @ApiResponses({
-            @ApiResponse(code=400, message = "BAD DATA INPUT"),
+
             @ApiResponse(code=500, message = "INTERNAL ERROR FROM SPRING", response = String.class),
             @ApiResponse(code=202, message = "Created")
     })
 
-    public Integer multiplication(@ApiParam(value = "The operands request body")
-                               @RequestBody (required = true)Integer[] param){
+    public int multiplication(@ApiParam(value = "The operands request body")
+                               @RequestBody (required = true) @Validated @Size(min=2) int[] param){
+
         Integer support=1;
         for (int i = 0; i < param.length; i++) {
             support=support*param[i];
         }
         return support;
     }
+
     @GetMapping("/square/{n}")
     @ApiOperation(value="it squares an integer passed in the path",
             notes="pass the integer to be squared in the Path example:.../square/3" )
@@ -75,7 +80,7 @@ public class MathController {
             @ApiResponse(code=202, message = "Created")
     })
 
-    public Integer square(@ApiParam(value="The value") @PathVariable(required = true)Integer n){
+    public int square(@ApiParam(value="The value") @PathVariable(required = true)int n){
 
         return n*n;
     }
