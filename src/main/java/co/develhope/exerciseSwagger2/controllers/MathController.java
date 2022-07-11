@@ -55,7 +55,7 @@ public class MathController {
                     "passed as an array in the body of the request example:[2,3,4,5,..]" )
     @ResponseStatus(HttpStatus.OK)
     @ApiResponses({
-            @ApiResponse(code=400, message = "BAD DATA INPUT"),
+
             @ApiResponse(code=500, message = "INTERNAL ERROR FROM SPRING", response = String.class),
             @ApiResponse(code=202, message = "Created")
     })
